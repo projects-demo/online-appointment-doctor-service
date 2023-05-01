@@ -43,7 +43,7 @@ spec:
     spec:
       containers:
       - name: vets-service-ver1
-        image: gcr.io/app-mod-gebu-trainees/online-appointment-doctor-service:latest
+        image: saurabh2204/online-appointment-doctor-service:latest
         imagePullPolicy: Always
         ports:
         - containerPort: 8899
