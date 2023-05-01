@@ -15,7 +15,7 @@ spec:
   selector:
     app: doctor-service-v1-v2
 
-  type: NodePort
+  type: LoadBalancer
 
 ---
 
