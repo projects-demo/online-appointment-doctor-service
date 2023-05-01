@@ -6,9 +6,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 public class HelloService {	
-		 @RequestMapping("/hello")
+		 @RequestMapping("/svc")
 	    public String hello() {		 
-		      return String.format(" vets-service This is hello from version 1");	     
+		      return String.format("doctor-service This is hello from doctor service!!");	     
 	    }	
 }
 
