@@ -1,0 +1,15 @@
+Manifest-Version: 1.0
+Created-By: Apache Maven 3.6.3
+Built-By: saurabh2204
+Build-Jdk: 11.0.18
+Implementation-Title: kube
+Implementation-Version: 0.0.1-SNAPSHOT
+Implementation-Vendor-Id: com.pnm.kube
+Implementation-URL: https://projects.spring.io/spring-boot/#/spring-boot
+ -starter-parent/online-appointment-doctor-service
+Main-Class: org.springframework.boot.loader.JarLauncher
+Start-Class: com.pnm.kube.canary.KubeApplicationVets
+Spring-Boot-Version: 2.1.2.RELEASE
+Spring-Boot-Classes: BOOT-INF/classes/
+Spring-Boot-Lib: BOOT-INF/lib/
+

@@ -1,0 +1,9 @@
+com/pnm/kube/canary/Specialty.class
+com/pnm/kube/canary/HelloService.class
+com/pnm/kube/canary/Vet.class
+com/pnm/kube/canary/VetResource.class
+com/pnm/kube/canary/VetRepository.class
+com/pnm/kube/canary/VetsProperties$Cache.class
+com/pnm/kube/canary/CacheConfig.class
+com/pnm/kube/canary/VetsProperties.class
+com/pnm/kube/canary/KubeApplicationVets.class
