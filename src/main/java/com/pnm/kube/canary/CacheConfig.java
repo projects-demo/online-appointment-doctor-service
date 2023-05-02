@@ -1,4 +1,3 @@
-
 package com.pnm.kube.canary;
 
 import org.springframework.cache.annotation.EnableCaching;
