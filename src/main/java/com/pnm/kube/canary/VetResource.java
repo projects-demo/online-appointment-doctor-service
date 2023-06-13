@@ -1,8 +1,6 @@
 
 package com.pnm.kube.canary;
 
-import lombok.RequiredArgsConstructor;
-
 import java.util.List;
 
 import org.springframework.web.bind.annotation.GetMapping;
@@ -10,10 +8,15 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+
 
 @RequestMapping("/vets")
 @RestController
 @RequiredArgsConstructor
+@Slf4j
+	
 class VetResource {
 
     private final VetRepository vetRepository;
@@ -21,6 +24,10 @@ class VetResource {
     @GetMapping
     public List<Vet> showResourcesVetList() {
     	System.err.println("In Vets Service...");
+    	log.debug("In Testing Logs VetResource. debug");
+    	log.trace("In Testing Logs VetResource. trace");
+    	log.info("In Testing Logs VetResource. info");
+
         return vetRepository.findAll();
     }
     
