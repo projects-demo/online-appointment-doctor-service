@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import io.opentelemetry.api.trace.StatusCode;
 
+<<<<<<< HEAD
 import io.opentelemetry.api.logs.GlobalLoggerProvider;
 import io.opentelemetry.exporter.otlp.logs.OtlpGrpcLogRecordExporter;
 import io.opentelemetry.sdk.logs.SdkLoggerProvider;
@@ -41,11 +42,29 @@ import io.opentelemetry.api.metrics.Meter;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+=======
+import lombok.extern.slf4j.Slf4j;
+
+>>>>>>> branch 'main' of https://github.com/projects-demo/online-appointment-doctor-service/
 @RestController
+<<<<<<< HEAD
 //@Slf4j
 @Log4j2
 public class HelloService {
 	  private static final Logger logger = LogManager.getLogger(HelloService.class);
+=======
+@Slf4j
+public class HelloService {	
+		 @RequestMapping("/svc")
+	    public String hello() {		 
+		    	log.debug("In Testing Logs HelloService Service. debug");
+		    	log.trace("In Testing Logs HelloService Service. trace");
+		    	log.info("In Testing Logs HelloService Service. info");
+		      return String.format("doctor-service This is hello from doctor service!!");	 
+		      
+	    }	
+}
+>>>>>>> branch 'main' of https://github.com/projects-demo/online-appointment-doctor-service/
 
 	 // private static final Logger logger = LoggerFactory.getLogger(MyClass.class);
 	 // private static final Tracer tracer = GlobalOpenTelemetry.getTracer("my-library-name", "1.0.0");
