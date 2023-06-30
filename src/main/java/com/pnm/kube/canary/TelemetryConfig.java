@@ -73,6 +73,7 @@ public class TelemetryConfig {
 	public void main() {
 		
 		
+		//OTEL_RESOURCE_ATTRIBUTES
 		
 		Resource resource = Resource.getDefault()
 				  .merge(Resource.create(Attributes.of(ResourceAttributes.SERVICE_NAME, "doctor-service-name")));
@@ -89,8 +90,6 @@ public class TelemetryConfig {
 										.build())
 						.build());
 */
-
-/**		
 		
 				SdkTracerProvider sdkTracerProvider = SdkTracerProvider.builder()
 				  .addSpanProcessor(BatchSpanProcessor.builder(OtlpGrpcSpanExporter.builder().setEndpoint(oltpEndpoint).build()).build())
@@ -98,10 +97,10 @@ public class TelemetryConfig {
 				  .build();
 
 				SdkMeterProvider sdkMeterProvider = SdkMeterProvider.builder()
-				  .registerMetricReader(PeriodicMetricReader.builder(OtlpGrpcMetricExporter.builder().build()).build())
+				  .registerMetricReader(PeriodicMetricReader.builder(OtlpGrpcMetricExporter.builder().setEndpoint(oltpEndpoint).build()).build())
 				  .setResource(resource)
 				  .build();
-				initializeOpenTelemetryLogs();
+			
 				SdkLoggerProvider sdkLoggerProvider = SdkLoggerProvider.builder()
 				  .addLogRecordProcessor(BatchLogRecordProcessor.builder(OtlpGrpcLogRecordExporter.builder().setEndpoint(oltpEndpoint).build()).build())
 				  .setResource(resource)
@@ -113,9 +112,9 @@ public class TelemetryConfig {
 				  .setLoggerProvider(sdkLoggerProvider)
 				  .setPropagators(ContextPropagators.create(W3CTraceContextPropagator.getInstance()))
 				  .buildAndRegisterGlobal();
-*/
+
 		
-		initializeOpenTelemetry();
+		//initializeOpenTelemetry();
 	}
 	
 	

@@ -2,6 +2,7 @@ package com.pnm.kube.canary;
 
 import io.opentelemetry.api.GlobalOpenTelemetry;
 import io.opentelemetry.api.common.AttributeKey;
+import io.opentelemetry.api.common.Attributes;
 import io.opentelemetry.api.logs.Severity;
 import io.opentelemetry.api.trace.Span;
 import io.opentelemetry.context.Scope;
@@ -30,6 +31,11 @@ public class Application {
   private static final org.slf4j.Logger slf4jLogger = LoggerFactory.getLogger("slf4j-logger");
   private static final java.util.logging.Logger julLogger = Logger.getLogger("jul-logger");
 
+  private static final AttributeKey<String> adRequestTypeKey =
+      AttributeKey.stringKey("app.ads.ad_request_type");
+  private static final AttributeKey<String> adResponseTypeKey =
+      AttributeKey.stringKey("app.ads.ad_response_type");
+  
   public void main() {
     // Initialize OpenTelemetry as early as possible
     //initializeOpenTelemetry();
@@ -80,15 +86,13 @@ public class Application {
     // SHOULD NOT be used by end users in place of existing log APIs (i.e. Log4j, Slf4, JUL).
     io.opentelemetry.api.logs.Logger customAppenderLogger =
         GlobalOpenTelemetry.get().getLogsBridge().get("custom-log-appender");
-    maybeRunWithSpan(
-        () ->
-            customAppenderLogger
-                .logRecordBuilder()
-                .setSeverity(Severity.INFO)
-                .setBody("A log message from a custom appender without a span")
-                .setAttribute(AttributeKey.stringKey("key3"), "value3")
-                .emit(),
-        false);
+    Attributes attribs = Attributes.of(
+            adRequestTypeKey, "reqvalue", adResponseTypeKey, "resvalue");
+
+	maybeRunWithSpan(() -> customAppenderLogger.logRecordBuilder().setSeverity(Severity.INFO)
+			.setBody("A log message from a custom appender without a span")
+			.setAllAttributes(attribs)
+			.emit(), true);
     maybeRunWithSpan(
         () ->
             customAppenderLogger
@@ -108,7 +112,9 @@ public class Application {
     }
     Span span = GlobalOpenTelemetry.getTracer("my-tracer").spanBuilder("my-span").startSpan();
     try (Scope unused = span.makeCurrent()) {
-      runnable.run();
+		span.setAttribute("myAttribute", "myValue");
+		span.addEvent("myEvent");
+		runnable.run();
     } finally {
       span.end();
     }
