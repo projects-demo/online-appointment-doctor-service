@@ -3,8 +3,8 @@
 
  <appender name="console" class="ch.qos.logback.core.ConsoleAppender">
     <encoder>
-      <pattern>
-        SK%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg trace_id=%X{trace_id} span_id=%X{span_id} trace_flags=%X{trace_flags} %n
+      <pattern> 
+        SK %d{yyyy-MM-dd'T'HH:mm:ss.SSS,IST} [%thread] %-5level %logger{36} - %msg trace_id=%X{trace_id} span_id=%X{span_id} trace_flags=%X{trace_flags} %n
       </pattern>
     </encoder>
   </appender>

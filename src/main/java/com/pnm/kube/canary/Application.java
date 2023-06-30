@@ -37,7 +37,6 @@ public class Application {
       AttributeKey.stringKey("app.ads.ad_response_type");
   
   public void main() {
-    // Initialize OpenTelemetry as early as possible
     //initializeOpenTelemetry();
 
     // Route JUL logs to slf4j
@@ -45,41 +44,19 @@ public class Application {
     SLF4JBridgeHandler.install();
 
     // Log using log4j API
-    maybeRunWithSpan(() -> log4jLogger.info("A log4j log message without a span"), false);
     maybeRunWithSpan(() -> log4jLogger.info("A log4j log message with a span"), true);
     Map<String, Object> mapMessage = new HashMap<>();
     mapMessage.put("key2", "value2");
     mapMessage.put("message2", "A log4j structured message");
-    maybeRunWithSpan(() -> log4jLogger.info(new MapMessage<>(mapMessage)), false);
+    maybeRunWithSpan(() -> log4jLogger.info(new MapMessage<>(mapMessage)), true);
     ThreadContext.clearAll();
-   /** maybeRunWithSpan(
-        () -> log4jLogger.info("A log4j log message with an exception", new Exception("error!")),
-        false);
-*/
-    // Log using slf4j API w/ logback backend
-    maybeRunWithSpan(() -> slf4jLogger.info("A slf4j log message without a span"), false);
-    maybeRunWithSpan(() -> slf4jLogger.info("A slf4j log message with a span"), true);
- /**   maybeRunWithSpan(
-        () ->
-            slf4jLogger
-                .atInfo()
-                .setMessage("A slf4j structured message")
-                .addKeyValue("key", "value")
-                .log(),
-        false);
-    maybeRunWithSpan(
-        () -> slf4jLogger.info("A slf4j log message with an exception", new Exception("error!")),
-        false);
 
-    // Log using JUL API, bridged to slf4j, w/ logback backend
-    maybeRunWithSpan(() -> julLogger.info("A JUL log message without a span"), false);
-    maybeRunWithSpan(() -> julLogger.info("A JUL log message with a span"), true);
-    maybeRunWithSpan(
-        () ->
-            julLogger.log(
-                Level.INFO, "A JUL log message with an exception", new Exception("error!")),
-        false);
-*/
+    maybeRunWithSpan(() -> slf4jLogger.info("A slf4j log message with a span"), true);
+
+    maybeRunWithSpan(() -> julLogger.info("A julLogger log message with a span"), true);
+
+    
+
     // Log using OpenTelemetry Log Bridge API
     // WARNING: This illustrates how to write appenders which bridge logs from
     // existing frameworks into the OpenTelemetry Log Bridge API. These APIs
@@ -87,21 +64,12 @@ public class Application {
     io.opentelemetry.api.logs.Logger customAppenderLogger =
         GlobalOpenTelemetry.get().getLogsBridge().get("custom-log-appender");
     Attributes attribs = Attributes.of(
-            adRequestTypeKey, "reqvalue", adResponseTypeKey, "resvalue");
+            adRequestTypeKey, "req_value", adResponseTypeKey, "res_value");
 
 	maybeRunWithSpan(() -> customAppenderLogger.logRecordBuilder().setSeverity(Severity.INFO)
-			.setBody("A log message from a custom appender without a span")
+			.setBody("A log message from a custom appender with a span")
 			.setAllAttributes(attribs)
 			.emit(), true);
-    maybeRunWithSpan(
-        () ->
-            customAppenderLogger
-                .logRecordBuilder()
-                .setSeverity(Severity.INFO)
-                .setBody("A log message from a custom appender with a span")
-                .setAttribute(AttributeKey.stringKey("key4"), "value4")
-                .emit(),
-        true);
   }
 
  
