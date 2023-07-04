@@ -24,7 +24,7 @@ import org.apache.logging.log4j.message.MapMessage;
 import org.slf4j.LoggerFactory;
 import org.slf4j.bridge.SLF4JBridgeHandler;
 
-public class Application {
+public class LogService {
 
   private static final org.apache.logging.log4j.Logger log4jLogger =
       LogManager.getLogger("log4j-logger");
@@ -36,7 +36,7 @@ public class Application {
   private static final AttributeKey<String> adResponseTypeKey =
       AttributeKey.stringKey("app.ads.ad_response_type");
   
-  public void main() {
+  public void log() {
     //initializeOpenTelemetry();
 
     // Route JUL logs to slf4j
@@ -74,7 +74,9 @@ public class Application {
 
  
   private static void maybeRunWithSpan(Runnable runnable, boolean withSpan) {
-    if (!withSpan) {
+	 // withSpan = false;
+   if (!withSpan) 
+    {
       runnable.run();
       return;
     }

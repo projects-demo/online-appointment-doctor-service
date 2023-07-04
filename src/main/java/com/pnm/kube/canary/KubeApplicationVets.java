@@ -17,8 +17,8 @@ public class KubeApplicationVets {
 
 	public static void main(String[] args) {
 
-		new TelemetryConfig().main();
-		//new Application().main();
+		new TelemetryConfig().initializeOpenTelemetry();
+
 		log.debug("In Testing Logs KubeApplicationVets Service. debug");
 		log.trace("In Testing Logs KubeApplicationVets Service. trace");
 		log.info("In Testing Logs KubeApplicationVets Service. info");

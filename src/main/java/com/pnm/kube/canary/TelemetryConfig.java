@@ -70,19 +70,20 @@ public class TelemetryConfig {
 	private static String oltpEndpointEnv = "my-otel-demo-otelcol-contrib"; // System.getenv("OTEL_EXPORTER_OTLP_ENDPOINT")
 	private static  String oltpEndpoint = "http://101.132.174.5:4317/";
 
-	public void main() {
+	public void initializeOpenTelemetry() {
 		
 		
 		//OTEL_RESOURCE_ATTRIBUTES
 		
 		Resource resource = Resource.getDefault()
-				  .merge(Resource.create(Attributes.of(ResourceAttributes.SERVICE_NAME, "doctor-service-name")));
+				  .merge(Resource.create(Attributes.of(ResourceAttributes.SERVICE_NAME, "doctor-service-k8s")));
+		//initializeOpenTelemetryLogs();
 
-
-/**		GlobalLoggerProvider
+/**
+		GlobalLoggerProvider
 				.set(SdkLoggerProvider.builder()
 						.setResource(Resource.getDefault().toBuilder()
-								.put(ResourceAttributes.SERVICE_NAME, "doc-service").build())
+								.put(ResourceAttributes.SERVICE_NAME, "doc-service-local").build())
 						.addLogRecordProcessor(
 								BatchLogRecordProcessor
 										.builder(OtlpGrpcLogRecordExporter.builder()
@@ -90,6 +91,7 @@ public class TelemetryConfig {
 										.build())
 						.build());
 */
+		
 		
 				SdkTracerProvider sdkTracerProvider = SdkTracerProvider.builder()
 				  .addSpanProcessor(BatchSpanProcessor.builder(OtlpGrpcSpanExporter.builder().setEndpoint(oltpEndpoint).build()).build())
@@ -114,12 +116,11 @@ public class TelemetryConfig {
 				  .buildAndRegisterGlobal();
 
 		
-		//initializeOpenTelemetry();
 	}
 	
+
 	
-	
-	 private static void initializeOpenTelemetry() {
+	 private static void initializeOpenTelemetryLogs() {
 		    OpenTelemetrySdk sdk =
 		        OpenTelemetrySdk.builder()
 		            .setTracerProvider(SdkTracerProvider.builder().setSampler(Sampler.alwaysOn()).build())
@@ -143,7 +144,7 @@ public class TelemetryConfig {
 		    Runtime.getRuntime().addShutdownHook(new Thread(sdk::close));
 		  }
 
-	
+
 	
 	
 	

@@ -46,38 +46,21 @@ import org.apache.logging.log4j.Logger;
 @Log4j2
 public class HelloService {
 	  private static final Logger logger = LogManager.getLogger(HelloService.class);
-
-	 // private static final Logger logger = LoggerFactory.getLogger(MyClass.class);
-	 // private static final Tracer tracer = GlobalOpenTelemetry.getTracer("my-library-name", "1.0.0");
-	  private static final Tracer tracer = GlobalOpenTelemetry.getTracer("doctor-service-name");
-	  private static final Meter meter = GlobalOpenTelemetry.getMeter("doctor-service-name");
-	private static final AttributeKey<String> adRequestTypeKey =
-		      AttributeKey.stringKey("app.ads.ad_request_type");
-		  private static final AttributeKey<String> adResponseTypeKey =
-		      AttributeKey.stringKey("app.ads.ad_response_type");
-
 	@RequestMapping("/svc")
 	public String hello() throws IOException {
-		//myMethod();
-		new Application().main();
+
+		new LogService().log();
+
 		log.debug("In Testing Logs HelloService Service. debug");
 		log.trace("In Testing Logs HelloService Service. trace");
 		log.info("In Testing Logs HelloService Service. info");
-		logger.info("Hello Logger Info");
 		log.info(
 		          "Order saved {}",
 		          StructuredArguments.keyValue("orderId", "12345"),
 		          StructuredArguments.keyValue("orderAmount", 100.0));
 		
 	
-	      Span span = Span.current();
-	      span.setAttribute("app.ads.contextKeys", "value3");
-	      span.setAttribute("app.ads.contextKeys.count", "value4");
-	      span.addEvent(span.toString());
-	      span.addEvent(
-	              "Error", Attributes.of(AttributeKey.stringKey("exception.message"), span.toString()));
-	          span.setStatus(StatusCode.ERROR);
-		
+	   
 	          return String.format("doctor-service This is hello from doctor service!!");
 
 	}
