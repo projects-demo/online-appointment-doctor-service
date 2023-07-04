@@ -71,12 +71,15 @@ public class TelemetryConfig {
 	private static  String oltpEndpoint = "http://101.132.174.5:4317/";
 
 	public void initializeOpenTelemetry() {
-		
-		
-		//OTEL_RESOURCE_ATTRIBUTES
+//          value: service.name=$(OTEL_SERVICE_NAME),service.instance.id=$(OTEL_K8S_POD_UID),service.namespace=opentelemetry-demo,k8s.namespace.name=$(OTEL_K8S_NAMESPACE),k8s.node.name=$(OTEL_K8S_NODE_NAME),k8s.pod.name=$(OTEL_K8S_POD_NAME)
 		
 		Resource resource = Resource.getDefault()
-				  .merge(Resource.create(Attributes.of(ResourceAttributes.SERVICE_NAME, "doctor-service-k8s")));
+				.merge(Resource.create(Attributes.of(ResourceAttributes.SERVICE_NAME, "doctor-service-k8s",
+						ResourceAttributes.CONTAINER_ID, System.getenv("OTEL_K8S_POD_NAME"),
+						ResourceAttributes.K8S_POD_UID, System.getenv("OTEL_K8S_POD_UID"),
+						ResourceAttributes.K8S_NODE_NAME, System.getenv("OTEL_K8S_NODE_NAME"),
+						ResourceAttributes.K8S_NAMESPACE_NAME, System.getenv("OTEL_K8S_NAMESPACE"))));
+		
 		//initializeOpenTelemetryLogs();
 
 /**

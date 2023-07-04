@@ -63,6 +63,8 @@ public class LogService {
     // SHOULD NOT be used by end users in place of existing log APIs (i.e. Log4j, Slf4, JUL).
     io.opentelemetry.api.logs.Logger customAppenderLogger =
         GlobalOpenTelemetry.get().getLogsBridge().get("custom-log-appender");
+
+    
     Attributes attribs = Attributes.of(
             adRequestTypeKey, "req_value", adResponseTypeKey, "res_value");
 
