@@ -8,12 +8,17 @@ import io.opentelemetry.api.trace.Span;
 import io.opentelemetry.context.Scope;
 import io.opentelemetry.exporter.otlp.logs.OtlpGrpcLogRecordExporter;
 import io.opentelemetry.sdk.OpenTelemetrySdk;
+import io.opentelemetry.sdk.common.CompletableResultCode;
 import io.opentelemetry.sdk.logs.SdkLoggerProvider;
+import io.opentelemetry.sdk.logs.data.Body;
 import io.opentelemetry.sdk.logs.export.BatchLogRecordProcessor;
 import io.opentelemetry.sdk.resources.Resource;
 import io.opentelemetry.sdk.trace.SdkTracerProvider;
 import io.opentelemetry.sdk.trace.samplers.Sampler;
 import io.opentelemetry.semconv.resource.attributes.ResourceAttributes;
+import io.opentelemetry.sdk.logs.data.LogRecordData;
+
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Level;
@@ -23,9 +28,20 @@ import org.apache.logging.log4j.ThreadContext;
 import org.apache.logging.log4j.message.MapMessage;
 import org.slf4j.LoggerFactory;
 import org.slf4j.bridge.SLF4JBridgeHandler;
+import io.opentelemetry.sdk.logs.data.Body;
+import io.opentelemetry.sdk.logs.data.LogRecordData;
+import io.opentelemetry.sdk.logs.export.LogRecordExporter;
+import io.opentelemetry.sdk.logs.export.SimpleLogRecordProcessor;
 
 public class LogService {
 
+	private static final String jsonPayload = "{\r\n"
+			+ "    \"jsonPayload\": {\r\n"
+			+ "        \"key1\": \"val1\",\r\n"
+			+ "		\"key2\": \"val2\"\r\n"
+			+ "		}\r\n"
+			+ "}";
+	
   private static final org.apache.logging.log4j.Logger log4jLogger =
       LogManager.getLogger("log4j-logger");
   private static final org.slf4j.Logger slf4jLogger = LoggerFactory.getLogger("slf4j-logger");
@@ -40,7 +56,10 @@ public class LogService {
     //initializeOpenTelemetry();
 
     // Route JUL logs to slf4j
-    SLF4JBridgeHandler.removeHandlersForRootLogger();
+	    Body body = Body.string(jsonPayload);
+	    maybeRunWithSpan(() -> slf4jLogger.info(body.asString()), true);
+
+	    SLF4JBridgeHandler.removeHandlersForRootLogger();
     SLF4JBridgeHandler.install();
 
     // Log using log4j API
@@ -91,4 +110,6 @@ public class LogService {
       span.end();
     }
   }
+  
+	
 }
