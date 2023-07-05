@@ -1,0 +1,117 @@
+apiVersion: v1
+kind: Service 
+metadata:
+  name: doctor-service
+  labels:
+    app: doctor-service-svc-label
+spec:
+  ports:
+  - port: 8080
+    name: http
+  selector:
+    app: doctor-service-v1-v2
+  type: LoadBalancer
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: doctor-service-deployment-v1
+  labels:
+#    app: doctor-service-dep-label
+    app.kubernetes.io/component: doc-srv-yaml
+spec:
+  replicas: 1
+  selector: 
+    matchLabels: 
+      app: doctor-service-v1-v2
+  template: # template for the pods
+    metadata:
+      labels:
+        app: doctor-service-v1-v2
+        version: v1
+    spec:
+      containers:
+      - name: vets-service-ver1
+        image: artifactory.build.ingka.ikea.com/ilo-fli-fmspoc-docker-release-local/com.ingka.ilo.ali.test/online-appointment-doctor-service:latest
+#        command: [ "sh", "-c"]
+#        args:
+#        - while true; do
+#            echo -en '\n';
+#            printenv OTEL_SERVICE_NAME OTEL_K8S_NAMESPACE OTEL_K8S_NODE_NAME;
+#            printenv OTEL_K8S_POD_NAME OTEL_K8S_POD_UID KUBE_NODE_NAME MY_POD_IP;
+#            sleep 10;
+#            done;
+        env:
+        - name: FEATURE_FLAG_GRPC_SERVICE_ADDR
+          value: "my-otel-demo-featureflagservice:50053"    
+        - name: OTEL_LOGS_EXPORTER
+          value: otlp                     
+        - name: OTEL_EXPORTER_OTLP_PROTOCOL
+          value: grpc         
+        - name: OTEL_EXPORTER_OTLP_ENDPOINT
+          value: http://101.132.174.5:4317
+        - name: OTLP_LOGS_EXPORTER
+          value: otlp
+        - name: OTEL_TRACES_EXPORTER
+          value: otlp
+        - name: OTEL_METRICS_EXPORTER
+          value: otlp          
+        - name: OTEL_EXPORTER_OTLP_LOGS_ENDPOINT
+          value: http://101.132.174.5:4317          
+        - name: SERVICE_NAME
+          value: doctor-service
+        - name: OTEL_SERVICE_NAME
+          valueFrom:
+            fieldRef:
+              apiVersion: v1
+              fieldPath: "metadata.labels['app.kubernetes.io/component']"
+        - name: OTEL_K8S_NAMESPACE
+          valueFrom:
+            fieldRef:
+              apiVersion: v1
+              fieldPath: metadata.namespace
+        - name: OTEL_K8S_NODE_NAME
+          valueFrom:
+            fieldRef:
+              apiVersion: v1
+              fieldPath: spec.nodeName
+        - name: OTEL_K8S_POD_NAME
+          valueFrom:
+            fieldRef:
+              apiVersion: v1
+              fieldPath: metadata.name
+        - name: OTEL_K8S_POD_UID
+          valueFrom:
+            fieldRef:
+              apiVersion: v1
+              fieldPath: metadata.uid
+        - name: KUBE_NODE_NAME
+          valueFrom:
+            fieldRef:
+              apiVersion: v1
+              fieldPath: spec.nodeName
+        - name: MY_POD_IP
+          valueFrom:
+            fieldRef:
+              apiVersion: v1
+              fieldPath: status.podIP              
+        - name: OTEL_COLLECTOR_NAME
+#          value: '{{ include "otel-demo.name" . }}-otelcol-contrib'
+#          value: 'my-otel-demo-otelcol-contrib'
+          value: '101.132.174.5'
+        - name: OTEL_EXPORTER_OTLP_METRICS_TEMPORALITY_PREFERENCE
+          value: cumulative
+        - name: OTEL_RESOURCE_ATTRIBUTES
+          value: service.instance.id=$(OTEL_K8S_POD_UID),service.namespace=opentelemetry-demo,k8s.namespace.name=$(OTEL_K8S_NAMESPACE),k8s.node.name=$(OTEL_K8S_NODE_NAME),k8s.pod.name=$(OTEL_K8S_POD_NAME)
+          
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 8899
+#        resources:
+#          requests:
+#            memory: "900Mi"
+#          limits:
+#            memory: "900Mi"        
+      imagePullSecrets:
+      - name: docker-pull-secret
+      
