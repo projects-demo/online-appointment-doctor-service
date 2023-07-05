@@ -17,6 +17,13 @@ public class KubeApplicationVets {
 
 	public static void main(String[] args) {
 
+		String OTEL_LOGS_EXPORTER = System.getenv("OTEL_LOGS_EXPORTER");
+		String OTEL_EXPORTER_OTLP_PROTOCOL = 	System.getenv("OTEL_EXPORTER_OTLP_PROTOCOL");
+
+		System.err.println("OTEL_LOGS_EXPORTER->" + OTEL_LOGS_EXPORTER);
+		System.err.println("OTEL_EXPORTER_OTLP_PROTOCOL->" + OTEL_EXPORTER_OTLP_PROTOCOL);
+
+		
 		new TelemetryConfig().initializeOpenTelemetry();
 
 		log.debug("In Testing Logs KubeApplicationVets Service. debug");

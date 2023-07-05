@@ -61,6 +61,24 @@ public class LogService {
 	    slf4jLogger.info(body.asString());
 	    slf4jLogger.info("Simple Logs");
 
+
+	    String OTEL_LOGS_EXPORTER = System.getenv("OTEL_LOGS_EXPORTER");
+		String OTEL_EXPORTER_OTLP_PROTOCOL = 	System.getenv("OTEL_EXPORTER_OTLP_PROTOCOL");
+
+		System.err.println("3OTEL_LOGS_EXPORTER->" + OTEL_LOGS_EXPORTER);
+		System.err.println("3OTEL_EXPORTER_OTLP_PROTOCOL->" + OTEL_EXPORTER_OTLP_PROTOCOL);
+		
+		 String jsonPayload2 = "{\r\n"
+				+ "    \"jsonPayload2\": {\r\n"
+				+ "        \"OTEL_LOGS_EXPORTER\": \""+OTEL_LOGS_EXPORTER+"\",\r\n"
+				+ "		\"OTEL_EXPORTER_OTLP_PROTOCOL\": \""+OTEL_EXPORTER_OTLP_PROTOCOL+"\"\r\n"
+				+ "		}\r\n"
+				+ "}";
+		
+	    Body body2 = Body.string(jsonPayload2);
+	    slf4jLogger.info(body2.asString());
+
+
 	    SLF4JBridgeHandler.removeHandlersForRootLogger();
     SLF4JBridgeHandler.install();
 

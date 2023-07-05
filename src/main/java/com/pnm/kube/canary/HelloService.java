@@ -51,6 +51,12 @@ public class HelloService {
 
 		new LogService().log();
 
+		String OTEL_LOGS_EXPORTER = System.getenv("OTEL_LOGS_EXPORTER");
+		String OTEL_EXPORTER_OTLP_PROTOCOL = 	System.getenv("OTEL_EXPORTER_OTLP_PROTOCOL");
+
+		System.err.println("2OTEL_LOGS_EXPORTER->" + OTEL_LOGS_EXPORTER);
+		System.err.println("2OTEL_EXPORTER_OTLP_PROTOCOL->" + OTEL_EXPORTER_OTLP_PROTOCOL);
+		
 		log.debug("In Testing Logs HelloService Service. debug");
 		log.trace("In Testing Logs HelloService Service. trace");
 		log.info("In Testing Logs HelloService Service. info");
