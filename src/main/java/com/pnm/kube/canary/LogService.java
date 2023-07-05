@@ -37,7 +37,7 @@ public class LogService {
 
 	private static final String jsonPayload = "{\r\n"
 			+ "    \"jsonPayload\": {\r\n"
-			+ "        \"key1\": \"val1\",\r\n"
+			+ "        \"key1\": \"val11\",\r\n"
 			+ "		\"key2\": \"val2\"\r\n"
 			+ "		}\r\n"
 			+ "}";
@@ -57,22 +57,24 @@ public class LogService {
 
     // Route JUL logs to slf4j
 	    Body body = Body.string(jsonPayload);
-	    maybeRunWithSpan(() -> slf4jLogger.info(body.asString()), true);
+	   // maybeRunWithSpan(() -> slf4jLogger.info(body.asString()), true);
+	    slf4jLogger.info(body.asString());
+	    slf4jLogger.info("Simple Logs");
 
 	    SLF4JBridgeHandler.removeHandlersForRootLogger();
     SLF4JBridgeHandler.install();
 
     // Log using log4j API
-    maybeRunWithSpan(() -> log4jLogger.info("A log4j log message with a span"), true);
+   // maybeRunWithSpan(() -> log4jLogger.info("A log4j log message with a span"), true);
     Map<String, Object> mapMessage = new HashMap<>();
     mapMessage.put("key2", "value2");
     mapMessage.put("message2", "A log4j structured message");
-    maybeRunWithSpan(() -> log4jLogger.info(new MapMessage<>(mapMessage)), true);
+  //  maybeRunWithSpan(() -> log4jLogger.info(new MapMessage<>(mapMessage)), true);
     ThreadContext.clearAll();
 
-    maybeRunWithSpan(() -> slf4jLogger.info("A slf4j log message with a span"), true);
+    //maybeRunWithSpan(() -> slf4jLogger.info("A slf4j log message with a span"), true);
 
-    maybeRunWithSpan(() -> julLogger.info("A julLogger log message with a span"), true);
+    //maybeRunWithSpan(() -> julLogger.info("A julLogger log message with a span"), true);
 
     
 
@@ -83,7 +85,7 @@ public class LogService {
     io.opentelemetry.api.logs.Logger customAppenderLogger =
         GlobalOpenTelemetry.get().getLogsBridge().get("custom-log-appender");
 
-    
+ /**   
     Attributes attribs = Attributes.of(
             adRequestTypeKey, "req_value", adResponseTypeKey, "res_value");
 
@@ -91,6 +93,8 @@ public class LogService {
 			.setBody("A log message from a custom appender with a span")
 			.setAllAttributes(attribs)
 			.emit(), true);
+			
+*/
   }
 
  
