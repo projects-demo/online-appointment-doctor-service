@@ -21,6 +21,8 @@ import io.opentelemetry.sdk.logs.data.LogRecordData;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
+import java.nio.charset.StandardCharsets;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
@@ -89,11 +91,13 @@ public class LogService {
 	    Body body2 = Body.string(jsonPayload2);
 	    slf4jLogger.error(body2.asString());
 	    
-		File file; String jsonPayLoadErrorEvent = StringUtils.EMPTY;
+		InputStream inputStream; String jsonPayLoadErrorEvent = StringUtils.EMPTY;
 		JSONObject json = null;
 		try {
-			file = resourceErrorEvent.getFile();
-			jsonPayLoadErrorEvent = FileUtils.readFileToString(file);
+			inputStream = resourceErrorEvent.getInputStream();
+		     jsonPayLoadErrorEvent = new String(inputStream.readAllBytes(), StandardCharsets.UTF_8);
+
+			//jsonPayLoadErrorEvent = FileUtils.readFileToString(file.readAllBytes().toString());
 			 json = new JSONObject(jsonPayLoadErrorEvent);  
 
 		} catch (IOException e) {
