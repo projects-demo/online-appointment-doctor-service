@@ -1,4 +1,6 @@
-FROM openjdk:8-jdk-alpine
+#FROM openjdk:8-jdk-alpine
+FROM openjdk:19-jdk-alpine3.15
+
 
 #ENTRYPOINT ["java","-javaagent:/app/lib/opentelemetry-javaagent-1.27.0.jar", "-cp","app:app/lib/*","com.pnm.kube.canary.KubeApplicationVets"]
 
