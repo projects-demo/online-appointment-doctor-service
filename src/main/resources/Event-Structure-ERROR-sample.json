@@ -1,0 +1,38 @@
+{
+    "event": {   
+        "log_message": "Exception occurred while calling endpoint",         
+        "metadata": {
+            "message_reference": "12345678-009787-4ee2-80a7-435234523465",
+            "source_system": "XXWMSDHL",
+            "target_system": "XXIIPXXX",
+            "business_keys": {
+                "ItemNumber": "123456789",
+                "ItemType": "ART"
+            },            
+            "log_creation_timestamp": "2023-01-13T10:46:27:27Z",
+            "receive_message_timestamp": "2023-01-13T10:46:20:27Z",
+            "origin_event_timestamp": "2023-01-13T10:45:27:27Z",
+            "message_name": "Sync Stock XXXXXX",
+            "business_unit": {
+                "bu_code": "023",
+                "bu_type": "CDB"
+            },
+            "adapter_name": "XXX_OIP_00889_LUSTOCKXXX",
+            "message_version": "1.0"
+        },   
+        "error_details":{
+            "error_code": "5000",
+            "error_message": "Target replied with error",
+            "http_error":{
+                "http_response_status": "404",
+                "http_response_body": "Item not found",
+                "http_endpoint_url": "https://target/endpoint",
+                "http_method":"GET"
+            }
+        },
+        "platform": "GCP",
+        "environment": "ingka-ilo-fli-dev",
+        "resource": "gcf-xxx-sync-stock-xxxx-v1",
+        "severity": "ERROR"
+    }
+}
