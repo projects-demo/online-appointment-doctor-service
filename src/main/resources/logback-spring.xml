@@ -19,7 +19,7 @@
             class="io.opentelemetry.instrumentation.logback.appender.v1_0.OpenTelemetryAppender">
   </appender>
 
-  <root level="INFO">
+  <root level="ERROR">
     <appender-ref ref="console"/>
     <appender-ref ref="OpenTelemetry"/>
   </root>

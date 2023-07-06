@@ -22,7 +22,7 @@ limitations under the License.
         <OpenTelemetry name="OpenTelemetryAppender" captureMapMessageAttributes="true" captureExperimentalAttributes="true"/>
     </Appenders>
     <Loggers>
-        <Root level="info">
+        <Root level="ERROR">
             <AppenderRef ref="OpenTelemetryAppender" />
             <AppenderRef ref="ConsoleAppender" />
         </Root>

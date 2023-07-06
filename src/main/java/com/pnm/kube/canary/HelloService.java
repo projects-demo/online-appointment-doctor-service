@@ -45,11 +45,13 @@ import org.apache.logging.log4j.Logger;
 //@Slf4j
 @Log4j2
 public class HelloService {
+	@Autowired
+	LogService logService;
 	  private static final Logger logger = LogManager.getLogger(HelloService.class);
 	@RequestMapping("/svc")
 	public String hello() throws IOException {
 
-		new LogService().log();
+		logService.log();
 
 		String OTEL_LOGS_EXPORTER = System.getenv("OTEL_LOGS_EXPORTER");
 		String OTEL_EXPORTER_OTLP_PROTOCOL = 	System.getenv("OTEL_EXPORTER_OTLP_PROTOCOL");
